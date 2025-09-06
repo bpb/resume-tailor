@@ -1,0 +1,184 @@
+/* Selector styles (common for both selectors) */
+.selector {
+  position: fixed;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #00ff41;
+  backdrop-filter: blur(10px);
+  min-width: 200px;
+}
+
+.selector h3 {
+  margin: 0 0 10px 0;
+  color: #00ff41;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  text-align: center;
+}
+
+.selector select {
+  width: 100%;
+  padding: 8px;
+  background: #000;
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.selector select:focus {
+  outline: none;
+  box-shadow: 0 0 5px #00ff41;
+}
+
+.selector option {
+  background: #000;
+  color: #00ff41;
+}
+
+/* Theme selector specific */
+.theme-selector {
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #00ff41;
+  backdrop-filter: blur(10px);
+  min-width: 200px;
+}
+
+.theme-selector h3 {
+  margin: 0 0 10px 0;
+  color: #00ff41;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  text-align: center;
+}
+
+.theme-selector select {
+  width: 100%;
+  padding: 8px;
+  background: #000;
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.theme-selector select:focus {
+  outline: none;
+  box-shadow: 0 0 5px #00ff41;
+}
+
+.theme-selector option {
+  background: #000;
+  color: #00ff41;
+}
+
+/* Toggle button for mobile */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+}
+
+/* Resume selector specific */
+.resume-selector {
+  top: 20px;
+  left: 20px;
+}
+
+/* Toggle buttons for mobile */
+.selector-toggle {
+  position: fixed;
+  z-index: 1001;
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+}
+
+.theme-toggle {
+  top: 20px;
+  right: 20px;
+}
+
+.resume-toggle {
+  top: 20px;
+  left: 20px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .theme-selector {
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .resume-selector {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .theme-selector.active,
+  .resume-selector.active {
+    transform: translateX(0);
+  }
+
+  .selector-toggle {
+    display: flex;
+  }
+}
+
+/* Info panel */
+.info-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #00ff41;
+  backdrop-filter: blur(10px);
+  max-width: 300px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #00ff41;
+}
+
+.info-panel.hidden {
+  display: none;
+}
+
+.close-info {
+  float: right;
+  cursor: pointer;
+  margin-left: 10px;
+}
+

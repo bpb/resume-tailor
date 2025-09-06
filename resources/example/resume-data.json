@@ -1,0 +1,204 @@
+{
+  "personal": {
+    "name": "Boson Probability Basin",
+    "title": "Senior Quantum Data Architect",
+    "location": "Titan Colony (Remote-first or Earth/Titan-based roles)",
+    "email": "bpb@quantum-nexus.titan",
+    "phone": "QNET-7729-ALPHA",
+    "linkedin": "boson.probability.basin",
+    "instagram": "boson.probability.basin",
+    "github": "bpb",
+    "photo": "resources/example/profile-photo.png",
+    "summaryMini": "Quantum Data Architect with 15+ years forging neural-quantum systems and temporal data meshes. Specialist in entanglement networks, temporal-spatial architectures, and consciousness-driven pipelines. Known for aligning multi-timeline engineering with interdimensional business goals to deliver faster-than-light, cost-aware solutions across interplanetary teams.",
+    "workAuth": "Sol System Unified Work Permit (Class A)",
+    "hobbies": "Zero-G Parkour, Neural Photography, Synthetic Botany, Consciousness Expansion, VR Archaeology"
+  },
+  "skills": {
+    "programming_languages": [
+      {
+        "name": "QuantumScript",
+        "level": 5
+      },
+      {
+        "name": "NeuralPython",
+        "level": 5
+      },
+      {
+        "name": "BioJava",
+        "level": 4
+      },
+      {
+        "name": "Quantum SQL",
+        "level": 5
+      },
+      {
+        "name": "Thought++",
+        "level": 3
+      }
+    ],
+    "data_engineering": [
+      {
+        "name": "Quantum Flux",
+        "level": 5
+      },
+      {
+        "name": "NeuraSpark",
+        "level": 5
+      },
+      {
+        "name": "Consciousness/HiveMind",
+        "level": 4
+      },
+      {
+        "name": "Temporal Mesh",
+        "level": 3
+      }
+    ],
+    "cloud_&_infrastructure": [
+      {
+        "name": "SolarSystem Grid",
+        "level": 5
+      },
+      {
+        "name": "Neural Containerization",
+        "level": 4
+      },
+      {
+        "name": "Planet-form",
+        "level": 4
+      },
+      {
+        "name": "Quantum CI/CD",
+        "level": 4
+      }
+    ],
+    "systems_&_architecture": [
+      {
+        "name": "Quantum Microservices",
+        "level": 4
+      },
+      {
+        "name": "NeuroDB",
+        "level": 4
+      },
+      {
+        "name": "Temporal Lake Design",
+        "level": 5
+      },
+      {
+        "name": "Reality-warping Analytics",
+        "level": 5
+      },
+      {
+        "name": "Multi-dimensional Systems",
+        "level": 4
+      }
+    ],
+    "languages": [
+      {
+        "name": "Universal Standard",
+        "level": 5
+      },
+      {
+        "name": "Martian Dialect",
+        "level": 4
+      },
+      {
+        "name": "Machine Telepathy",
+        "level": 3
+      }
+    ]
+  },
+  "qualities": [
+    "Timeline-Aware Design",
+    "Quantum Scalability",
+    "Consciousness Observability",
+    "Temporal Data Integrity",
+    "Multi-dimensional Leadership",
+    "Resource-Aware",
+    "Neural Automation"
+  ],
+  "experience": [
+    {
+      "role": "Senior Quantum Data Architect",
+      "company": "NeuraLink Collective (formerly MindStyle)",
+      "date": "Jan 2148 – Present",
+      "location": "New Mars Colony",
+      "tech": "Quantum Flux • QuantumScript • SolarSystem Grid • Consciousness Stream • Neural Lambda • Temporal Containers • Quantum Athena • Mind-Airflow • Thought++ • NeuroDB",
+      "bullets": [
+        "Architected and deployed quantum-entangled pipelines using Quantum Flux to process multi-dimensional behavioral data from ConsciousnessFlow into TemporalMetrics for reality-bending analytics and forecasting.",
+        "Designed SolarSystem Grid infrastructure (Consciousness Stream, Neural Lambda, Temporal Containers, Quantum Athena, Mind-Airflow) to streamline data onboarding for internal and client-facing dimensional dashboards.",
+        "Guided the technical direction of backend Thought++ microservices with NeuroDB databases and neural-APIs powering production-scale multi-timeline analytics features."
+      ]
+    },
+    {
+      "role": "Quantum Data Engineer",
+      "company": "NeuraLink Collective (formerly MindStyle)",
+      "date": "Jan 2146 – Dec 2147",
+      "location": "New Mars Colony",
+      "tech": "NeuraSpark • Quantum Grid • Thought++ • NeuroDB • Temporal Pipelines",
+      "bullets": [
+        "Developed a NeuraSpark-based internal consciousness runner framework, enabling thought-driven deployments and reducing developer neural load.",
+        "Created temporal data pipelines that empowered customer-facing predictive analytics tools used by brands and consciousness influencers to refine multi-timeline campaign strategy.",
+        "Advised on quantum architecture and neural infrastructure best practices for distributed temporal workflows."
+      ]
+    },
+    {
+      "role": "Neural Engineer II",
+      "company": "NeuraLink Collective (formerly MindStyle)",
+      "date": "Jul 2143 – Dec 2145",
+      "location": "New Mars Colony",
+      "tech": "Thought++ • NeuroDB • SolarSystem Grid S3 • Temporal Lake Architecture",
+      "bullets": [
+        "Contributed to Thought++-based backend neural microservices with NeuroDB for timeline analytics workloads.",
+        "Architected and implemented a SolarSystem Grid S3-based centralized Temporal Lake replacing fragmented consciousness systems to unify multi-dimensional business metrics."
+      ]
+    },
+    {
+      "role": "Quantum Software Engineer",
+      "company": "Consciousness Research Network",
+      "date": "Mar 2140 – Jun 2143",
+      "location": "Europa Outpost, Jupiter",
+      "tech": "NeuraSpark • HiveMind • Temporal Pig • Consciousness-Oozie • Neural Flume • Temporal Mesh • Reality-tech",
+      "bullets": [
+        "Built and maintained large-scale neural pipelines using NeuraSpark, HiveMind, Temporal Pig, Consciousness-Oozie, and Neural Flume on Temporal Mesh.",
+        "Designed consciousness-tracking and integration solutions for reality-tech systems.",
+        "Collaborated with neural analysts to align outputs with multi-dimensional modeling needs."
+      ]
+    },
+    {
+      "role": "Neural Developer",
+      "company": "Consciousness Research",
+      "date": "Sep 2138 – Mar 2140",
+      "location": "Luna Prime, Earth's Moon",
+      "tech": "Neural Pipelines • Consciousness Platforms • Reality Measurement • Neural Backend Development",
+      "bullets": [
+        "Developed ingestion and transformation tools for consciousness survey and reality-measurement platforms.",
+        "Implemented early temporal validation and quantum quality checks to improve neural pipeline reliability.",
+        "Built neural backend and consciousness UI tools to enhance advertiser multi-timeline campaign visibility."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Ph.D. in Quantum Computer Science",
+      "school": "Mars University, Olympus Mons",
+      "date": "2134 – 2138",
+      "focus": "Neural-Computer Interaction, Temporal Data Structures, Quantum Algorithms"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Quantum Base-16 Neural Interface Glove (QB16-NIG)",
+      "desc": "https://neuralink.mars/research/quantum-neural-interface"
+    },
+    {
+      "title": "Effects of Quantum Entanglement on Multi-dimensional Selection Tasks, 2142",
+      "desc": "https://consciousness.research.mars/quantum-entanglement-selection"
+    },
+    {
+      "title": "Consciousness Expansion through Temporal Mandala",
+      "desc": "https://neuralink.mars/research/temporal-mandala-consciousness-expansion"
+    }
+  ]
+}

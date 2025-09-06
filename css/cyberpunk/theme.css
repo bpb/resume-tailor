@@ -1,0 +1,521 @@
+/* ======= Cyberpunk Theme with Combined Print/Screen Styles using Media Queries ======= */
+
+/* ==== SHARED VARIABLES AND BASE STYLES ==== */
+:root {
+  --bg: #0b0f14; /* deep graphite */
+  --bg-2: #0e141b; /* panel */
+  --text: #e6f1ff; /* primary text */
+  --muted: #9fb0c2; /* secondary */
+  --accent: #7af8d8; /* soft neon mint */
+  --accent-2: #57c7ff; /* cyan hint */
+  --border: #1a2330; /* hairline borders */
+  --glow: rgba(122, 248, 216, 0.18);
+  --mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --sans:
+    ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue",
+    Arial, "Noto Sans";
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--text);
+  background:
+    radial-gradient(
+      900px 500px at 10% 0%,
+      rgba(87, 199, 255, 0.06),
+      transparent 65%
+    ),
+    radial-gradient(
+      700px 400px at 100% 100%,
+      rgba(122, 248, 216, 0.05),
+      transparent 60%
+    ),
+    linear-gradient(0deg, rgba(10, 16, 24, 0.6) 0%, rgba(10, 16, 24, 0.6) 100%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* faint terminal scanline effect (very subtle) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.35;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 32px auto;
+  padding: 0 24px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  background:
+    linear-gradient(180deg, rgba(87, 199, 255, 0.06), transparent 22%),
+    var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow:
+    0 10px 24px -8px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(122, 248, 216, 0.05) inset;
+  position: relative;
+}
+.avatar {
+  width: 108px;
+  height: 108px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    rgba(122, 248, 216, 0.08),
+    rgba(87, 199, 255, 0.06)
+  );
+  border: 1px solid rgba(122, 248, 216, 0.35);
+  font: 700 12px var(--mono);
+  color: var(--muted);
+  overflow: hidden;
+  margin: 0 auto;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 11px;
+}
+.name {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+.role {
+  color: var(--accent);
+  font-weight: 700;
+  margin-top: 2px;
+  text-align: center;
+}
+.summary-mini {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.section {
+  margin-top: 18px;
+}
+.section h3 {
+  margin: 0 0 10px 0;
+  font: 700 12px var(--mono);
+  letter-spacing: 1.4px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.contact {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+.contact a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+.contact a:hover {
+  color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+  text-shadow: 0 0 8px rgba(122, 248, 216, 0.5);
+}
+.contact a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+.contact-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 3px;
+  align-items: start;
+  min-width: 0;
+}
+.contact-key {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 12px;
+}
+.contact-value {
+  color: var(--text);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+.icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+}
+
+.list {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+.pill {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: #0b1219;
+}
+
+/* ===== Skill meters (5-step terminal loading bars) ===== */
+.skill-row {
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  gap: 10px;
+  align-items: center;
+}
+.skill-name {
+  font-size: 13px;
+}
+.meter {
+  display: flex;
+  gap: 1px;
+  align-items: center;
+  justify-content: flex-end;
+  background: #0b1219;
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  padding: 1px;
+}
+.meter .seg {
+  width: 20px;
+  height: 6px;
+  background: #0b1219;
+  border: none;
+}
+.meter .seg.filled {
+  background: var(--accent);
+  box-shadow: 0 0 3px rgba(122, 248, 216, 0.4);
+}
+.meter[data-level="1"] .seg:nth-child(1) {
+  background: var(--accent);
+  box-shadow: 0 0 3px rgba(122, 248, 216, 0.4);
+}
+.meter[data-level="2"] .seg:nth-child(-n + 2) {
+  background: var(--accent);
+  box-shadow: 0 0 3px rgba(122, 248, 216, 0.4);
+}
+.meter[data-level="3"] .seg:nth-child(-n + 3) {
+  background: var(--accent);
+  box-shadow: 0 0 3px rgba(122, 248, 216, 0.4);
+}
+.meter[data-level="4"] .seg:nth-child(-n + 4) {
+  background: var(--accent);
+  box-shadow: 0 0 3px rgba(122, 248, 216, 0.4);
+}
+.meter[data-level="5"] .seg:nth-child(-n + 5) {
+  background: var(--accent);
+  box-shadow: 0 0 3px rgba(122, 248, 216, 0.4);
+}
+/* ===== Main ===== */
+.main {
+  display: grid;
+  gap: 16px;
+}
+.card {
+  background:
+    linear-gradient(180deg, rgba(122, 248, 216, 0.06), transparent 18%),
+    var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.35);
+}
+.card h2 {
+  margin: 0 0 10px 0;
+  font: 800 15.5px var(--mono);
+  letter-spacing: 0.5px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.card h3 {
+  margin: 0;
+  font-size: 15px;
+}
+.muted {
+  color: var(--muted);
+}
+
+.job {
+  display: grid;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px dashed var(--border);
+}
+.job:first-of-type {
+  border-top: none;
+  padding-top: 4px;
+}
+.job .top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.job ul {
+  margin: 6px 0 0 18px;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ===== Global link styles ===== */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+a:hover {
+  color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+  text-shadow: 0 0 8px rgba(122, 248, 216, 0.5);
+}
+
+a:visited {
+  color: var(--accent);
+}
+
+a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ===== Keyboard-style focus rings ===== */
+button,
+[tabindex] {
+  outline: none;
+}
+button:focus-visible,
+[tabindex]:focus-visible {
+  box-shadow:
+    0 0 0 2px #0b0f14,
+    0 0 0 4px var(--accent);
+  border-radius: 8px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== PRINT MEDIA QUERY ===== */
+@page {
+  size: auto;
+  margin: 10mm;
+}
+
+@media print {
+  /* Print style overrides - dark theme cyberpunk for print */
+  :root {
+    /* Keep cyberpunk dark theme for printing */
+    --bg: #0b0f14; /* deep graphite */
+    --bg-2: #0e141b; /* panel */
+    --text: #ffffff; /* brighter white for better contrast */
+    --muted: #b8c4d4; /* lighter blue-gray for better contrast */
+    --accent: #8fffeb; /* brighter mint for better visibility */
+    --accent-2: #80d8ff; /* brighter cyan for better values */
+    --border: #2a3340; /* more visible borders */
+    --glow: rgba(143, 255, 235, 0.25);
+  }
+
+  /* Force layout preservation in print */
+  body {
+    background: var(--bg);
+    color: var(--text);
+    min-width: 1200px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Keep scanlines effect for print */
+  body::before {
+    display: block;
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.02) 0px,
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 2px,
+      transparent 3px
+    );
+    mix-blend-mode: soft-light;
+    opacity: 0.35;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Page layout preservation */
+  .page {
+    max-width: 1100px;
+    width: 1100px;
+    margin: 32px auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  /* Grid layout preservation */
+  .grid {
+    display: grid !important;
+    grid-template-columns: 320px 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+  }
+
+  /* Force sidebar width */
+  .sidebar {
+    width: 320px !important;
+    align-self: start;
+    height: fit-content;
+    box-sizing: border-box;
+    background:
+      linear-gradient(180deg, rgba(87, 199, 255, 0.06), transparent 22%),
+      var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow:
+      0 10px 24px -8px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(122, 248, 216, 0.05) inset;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Card styles preservation */
+  .card {
+    background:
+      linear-gradient(180deg, rgba(122, 248, 216, 0.06), transparent 18%),
+      var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.35);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-inside: avoid;
+  }
+
+  /* Maintain card spacing */
+  .main {
+    display: grid !important;
+    gap: 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Avatar styles preservation */
+  .avatar {
+    background: linear-gradient(
+      135deg,
+      rgba(122, 248, 216, 0.08),
+      rgba(87, 199, 255, 0.06)
+    );
+    border: 1px solid rgba(122, 248, 216, 0.35);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Job section page break control */
+  .job {
+    page-break-inside: avoid;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* Maintain two-column layout */
+  .two-col {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Force color printing */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  /* Disable animations for print */
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Override responsive behavior in print */
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 320px 1fr !important;
+    }
+    .page {
+      width: 1100px !important;
+      max-width: 1100px !important;
+    }
+    .two-col {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  }
+
+  /* Hide UI elements during print */
+  .theme-selector,
+  .theme-toggle,
+  .info-panel,
+  .pdf-controls,
+  .resume-selector {
+    display: none !important;
+  }
+}

@@ -1,0 +1,440 @@
+/* ======= Soft Neon Green Terminal Theme with Combined Print/Screen Styles using Media Queries ======= */
+
+/* ==== SHARED VARIABLES AND BASE STYLES ==== */
+:root{
+  --bg:#0f0f0f;              /* softer dark background */
+  --bg-2:#1a1a1a;            /* slightly lighter panel */
+  --text:#7fb069;            /* muted sage green */
+  --muted:#5a8f42;           /* dimmer green */
+  --accent:#8bc34a;          /* softer lime green */
+  --accent-2:#9ccc65;        /* gentle lime */
+  --border:#2d4a2d;          /* softer green borders */
+  --glow:rgba(139,195,74,.15);
+  --mono: "Courier New", Consolas, "Liberation Mono", Monaco, monospace;
+  --sans: "Courier New", Consolas, "Liberation Mono", Monaco, monospace;
+}
+
+html,body{height:100%}
+body{
+  margin:0; font-family:var(--mono); color:var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  font-weight: normal;
+}
+
+/* Subtle terminal scanlines effect */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(127,176,105,.015) 0px,
+    rgba(127,176,105,.015) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  animation: gentleFlicker 0.3s infinite linear alternate;
+}
+
+@keyframes gentleFlicker {
+  0% { opacity: 0.98; }
+  100% { opacity: 1; }
+}
+
+/* Terminal cursor blink animation */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.page{max-width:1100px; margin:32px auto; padding:0 24px;}
+.grid{display:grid; grid-template-columns:320px 1fr; gap:24px;}
+
+/* ===== Sidebar ===== */
+.sidebar{
+  background: var(--bg-2);
+  border:2px solid var(--accent); border-radius:0px; padding:22px;
+  box-shadow: 0 0 12px rgba(139,195,74,.2), inset 0 0 15px rgba(139,195,74,.05);
+  position:relative;
+  font-family: var(--mono);
+}
+
+.sidebar::before {
+  content: "> PERSONNEL DATA";
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background: var(--bg);
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.avatar{width:108px;height:108px;border-radius:0px;display:flex;align-items:center;justify-content:center;
+  background: var(--bg);
+  border:2px solid var(--accent); font:700 10px var(--mono); color: var(--accent);
+  overflow:hidden; margin:0 auto;
+  box-shadow: 0 0 8px rgba(139,195,74,.3);
+}
+.avatar img{width:100%;height:100%;object-fit:cover;border-radius:0px; filter: sepia(0.8) hue-rotate(80deg) saturate(1.5) brightness(1.1);}
+.name{margin-top:14px; font-family:var(--mono); font-weight:bold; font-size:18px; letter-spacing:2px; text-align:center; text-transform:uppercase;}
+.name::after {
+  content: "_";
+  animation: blink 1.5s infinite;
+  color: var(--accent);
+}
+.role{color:var(--accent-2); font-weight:bold; margin-top:2px; text-align:center; text-transform:uppercase; letter-spacing:1px;}
+
+.section{margin-top:18px}
+.section h3{margin:0 0 10px 0; font:bold 12px var(--mono); letter-spacing:2px; color:var(--accent); text-transform:uppercase}
+.section h3::before {
+  content: "> ";
+  color: var(--accent);
+}
+
+.contact{display:grid; gap:3px; font-size:12px; font-family: var(--mono);}
+.contact a{color:var(--accent); text-decoration:none; transition:all 0.2s ease; border-bottom:1px solid transparent}
+.contact a:hover{color:var(--accent-2); border-bottom-color:var(--accent-2); text-shadow:0 0 5px rgba(139,195,74,.4)}
+.contact a:focus{outline:2px solid var(--accent); outline-offset:2px;}
+.contact-row{display:grid; grid-template-columns:80px 1fr; gap:3px; align-items:start; overflow-wrap: break-word; word-break: break-word;}
+.contact-key{color:var(--muted); font-weight:bold; text-transform:uppercase}
+.contact-key::after { content: ":"; }
+.contact-value{color:var(--text)}
+
+.list{display:grid; gap:6px; font-size:12px; color:var(--text)}
+.pill{display:inline-block; font-size:10px; color:var(--text); border:1px solid var(--accent); border-radius:0px; padding:2px 6px; background:var(--bg); margin:2px; text-transform:uppercase; letter-spacing:1px;}
+
+/* ===== Softer skill meters ===== */
+.skill-row{display:grid; grid-template-columns:1fr 110px; gap:10px; align-items:center}
+.skill-name{font-size:12px; text-transform:uppercase;}
+.meter{display:flex; gap:2px; align-items:center; justify-content:flex-end; background:var(--bg); border:1px solid var(--accent); border-radius:0px; padding:2px; font-family: var(--mono);}
+.meter .seg{width:18px; height:8px; background:var(--bg); border:1px solid var(--border);}
+.meter .seg.filled{background:var(--accent); box-shadow:0 0 3px rgba(139,195,74,.4); border-color: var(--accent);}
+.meter[data-level="1"] .seg:nth-child(1){background:var(--accent); box-shadow:0 0 3px rgba(139,195,74,.4); border-color: var(--accent);}
+.meter[data-level="2"] .seg:nth-child(-n+2){background:var(--accent); box-shadow:0 0 3px rgba(139,195,74,.4); border-color: var(--accent);}
+.meter[data-level="3"] .seg:nth-child(-n+3){background:var(--accent); box-shadow:0 0 3px rgba(139,195,74,.4); border-color: var(--accent);}
+.meter[data-level="4"] .seg:nth-child(-n+4){background:var(--accent); box-shadow:0 0 3px rgba(139,195,74,.4); border-color: var(--accent);}
+.meter[data-level="5"] .seg:nth-child(-n+5){background:var(--accent); box-shadow:0 0 3px rgba(139,195,74,.4); border-color: var(--accent);}
+
+/* ===== Main ===== */
+.main{display:grid; gap:16px}
+.card{
+  background: var(--bg-2);
+  border:2px solid var(--accent); border-radius:0px; padding:20px 22px;
+  box-shadow: 0 0 12px rgba(139,195,74,.15);
+  position: relative;
+}
+.card::before {
+  content: "[ " attr(data-section) " ]";
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background: var(--bg);
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.card h2{margin:0 0 15px 0; font:bold 16px var(--mono); letter-spacing:2px; color:var(--accent); text-transform:uppercase}
+.card h2::before {
+  content: ">> ";
+  color: var(--accent-2);
+}
+.card h3{margin:0; font-size:14px; font-family: var(--mono); text-transform:uppercase;}
+.muted{color:var(--muted)}
+
+.job{display:grid; gap:6px; padding:12px 0; border-top:1px dashed var(--border)}
+.job:first-of-type{border-top:none; padding-top:4px}
+.job .top{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.job ul{margin:6px 0 0 18px}
+.job li::marker {
+  content: "> ";
+  color: var(--accent);
+}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+
+/* ===== Global link styles ===== */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+a:hover {
+  color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+  text-shadow: 0 0 6px rgba(139, 195, 74, 0.4);
+}
+
+a:visited {
+  color: var(--accent);
+}
+
+a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ===== Keyboard-style focus rings ===== */
+button, [tabindex]{outline:none}
+button:focus-visible, [tabindex]:focus-visible{
+  box-shadow:0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+}
+
+/* ===== Responsive ===== */
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr}
+}
+
+/* ===== PRINT MEDIA QUERY ===== */
+@page {
+  size: auto;
+  margin: 10mm;
+}
+
+@media print {
+  /* Print optimization - light green scheme for printing */
+  :root {
+    /* Light green color scheme for better print results */
+    --bg: #ffffff;
+    --bg-2: #f8f8f8;
+    --text: #2c5a20;           /* dark green for text */
+    --muted: #3d6e30;          /* medium green for secondary text */
+    --border: #60aa4c;         /* light green for borders */
+    --accent: #1e6a0e;         /* dark green for accents */
+    --accent-2: #358523;       /* medium green for secondary accents */
+    --glow: rgba(110,160,95,.1);
+  }
+
+  /* Force layout preservation for print */
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-width: 1200px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Keep scanlines but make them subtle and static */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(110,160,95,.02) 0px,
+      rgba(110,160,95,.02) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    animation: none; /* Remove flicker for print */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    opacity: 0.5;
+  }
+
+  /* Page layout preservation */
+  .page {
+    width: 1100px;
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  /* Grid layout preservation */
+  .grid {
+    display: grid !important;
+    grid-template-columns: 320px 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+  }
+
+  /* Force sidebar width */
+  .sidebar {
+    width: 320px !important;
+    align-self: start;
+    height: fit-content;
+    box-sizing: border-box;
+    background: var(--bg-2);
+    border: 2px solid var(--accent);
+    border-radius: 0px;
+    box-shadow: 0 0 12px rgba(139,195,74,.2), inset 0 0 15px rgba(139,195,74,.05);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Sidebar label */
+  .sidebar::before {
+    content: "> PERSONNEL DATA";
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background: var(--bg);
+    padding: 0 8px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  /* Card styles preservation */
+  .card {
+    background: var(--bg-2);
+    border: 2px solid var(--accent);
+    border-radius: 0px;
+    box-shadow: 0 0 12px rgba(139,195,74,.15);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  /* Card label */
+  .card::before {
+    content: "[ " attr(data-section) " ]";
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background: var(--bg);
+    padding: 0 8px;
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Maintain card spacing */
+  .main {
+    display: grid !important;
+    gap: 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Avatar styles */
+  .avatar {
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 8px rgba(139,195,74,.3);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Terminal cursor - keep it visible */
+  .name::after {
+    content: "_";
+    color: var(--accent);
+    opacity: 1;
+    animation: none;
+  }
+
+  /* Heading styles */
+  .section h3::before {
+    content: "> ";
+    color: var(--accent);
+  }
+
+  .card h2::before {
+    content: ">> ";
+    color: var(--accent-2);
+  }
+
+  /* Skill meters */
+  .meter {
+    background: var(--bg);
+    border: 1px solid var(--accent);
+  }
+
+  .meter .seg {
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+
+  .meter[data-level="1"] .seg:nth-child(1),
+  .meter[data-level="2"] .seg:nth-child(-n+2),
+  .meter[data-level="3"] .seg:nth-child(-n+3),
+  .meter[data-level="4"] .seg:nth-child(-n+4),
+  .meter[data-level="5"] .seg:nth-child(-n+5) {
+    background: var(--accent);
+    box-shadow: 0 0 3px rgba(139,195,74,.4);
+    border-color: var(--accent);
+  }
+
+  /* Pills */
+  .pill {
+    background: var(--bg);
+    border: 1px solid var(--accent);
+    color: var(--text);
+  }
+
+  /* Job sections */
+  .job {
+    border-top: 1px dashed var(--border);
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .job li::marker {
+    content: "> ";
+    color: var(--accent);
+  }
+
+  /* Links */
+  a {
+    color: var(--accent) !important;
+    text-decoration: none !important;
+  }
+
+  /* Force color printing */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  /* Disable animations for print */
+  *, *::before, *::after {
+    animation-play-state: paused !important;
+    transition: none !important;
+  }
+
+  /* Override responsive behavior in print */
+  @media (max-width:900px) {
+    .grid {
+      grid-template-columns: 320px 1fr !important;
+      flex-direction: row !important;
+    }
+    .page {
+      width: 1100px !important;
+      max-width: 1100px !important;
+    }
+    .sidebar {
+      width: 320px !important;
+      order: 0 !important;
+    }
+    .main {
+      order: 1 !important;
+    }
+  }
+
+  /* Hide UI elements during print */
+  .theme-selector,
+  .theme-toggle,
+  .info-panel,
+  .pdf-controls,
+  .resume-selector {
+    display: none !important;
+  }
+}
+

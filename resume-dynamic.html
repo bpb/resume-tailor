@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Resume - Theme Selector</title>
+
+  <!-- Default theme (none) -->
+  <link id="theme-stylesheet" rel="stylesheet" href="css/none.css">
+
+  <!-- Selector styles -->
+  <link rel="stylesheet" href="css/selectors.css">
+</head>
+<body>
+  <!-- Theme Selector -->
+  <div class="theme-toggle selector-toggle" onclick="toggleThemeSelector()">⚙</div>
+
+  <div class="theme-selector selector" id="themeSelector">
+    <h3>🎨 Select Theme</h3>
+    <select id="themeSelect" onchange="changeTheme()">
+      <!-- Theme options will be populated dynamically by theme-switcher.js -->
+      <option value="">Loading themes...</option>
+    </select>
+  </div>
+
+  <!-- Resume Selector -->
+  <div class="resume-toggle selector-toggle" onclick="toggleResumeSelector()">📄</div>
+
+  <div class="resume-selector selector" id="resumeSelector">
+    <h3>📄 Select Resume</h3>
+    <select id="resumeSelect" onchange="changeResume()">
+      <!-- Resume options will be populated dynamically by resume-switcher.js -->
+      <option value="">Loading resumes...</option>
+    </select>
+  </div>
+
+  <!-- Info Panel -->
+  <div class="info-panel" id="infoPanel">
+    <span class="close-info" onclick="hideInfo()">✕</span>
+    <strong>Dynamic Resume</strong><br>
+    Switch between themes using the right selector.<br>
+    Switch between resumes using the left selector.<br>
+    PDF themes are optimized for printing.
+  </div>
+
+  <!-- Resume Container -->
+  <div id="resume">
+    <!-- Resume content will be loaded here -->
+  </div>
+
+
+  </script>
+  <!-- Resume Renderer Script -->
+  <script src="js/resume-renderer.js"></script>
+
+  <!-- Theme Switcher Script -->
+  <script src="js/theme-switcher.js"></script>
+
+  <!-- Resume Switcher Script -->
+  <script src="js/resume-switcher.js"></script>
+</body>
+</body>
+</html>
+

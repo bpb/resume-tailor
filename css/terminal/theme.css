@@ -1,0 +1,654 @@
+/* ======= Neon Green Terminal Theme (Classic Computer Terminal) with Combined Print/Screen Styles ======= */
+
+/* ==== SHARED VARIABLES AND BASE STYLES ==== */
+:root {
+  --bg: #000000; /* pure black terminal */
+  --bg-2: #0a0a0a; /* slightly lighter panel */
+  --text: #00ff00; /* classic neon green */
+  --muted: #00cc00; /* dimmer green */
+  --accent: #00ff41; /* bright neon green */
+  --accent-2: #39ff14; /* electric lime */
+  --border: #004400; /* dark green borders */
+  --glow: rgba(0, 255, 0, 0.3);
+  --mono: "Courier New", Consolas, "Liberation Mono", Monaco, monospace;
+  --sans: "Courier New", Consolas, "Liberation Mono", Monaco, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--mono);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: crisp-edges;
+  -moz-osx-font-smoothing: unset;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  font-weight: normal;
+}
+
+/* Terminal scanlines effect */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 0, 0.03) 0px,
+    rgba(0, 255, 0, 0.03) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  animation: flicker 0.15s infinite linear alternate;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 1;
+  }
+  98% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0.98;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Terminal cursor blink animation */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.page {
+  max-width: 1100px;
+  margin: 32px auto;
+  padding: 0 24px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  background: var(--bg-2);
+  border: 2px solid var(--accent);
+  border-radius: 0px;
+  padding: 22px;
+  box-shadow:
+    0 0 20px rgba(0, 255, 0, 0.3),
+    inset 0 0 20px rgba(0, 255, 0, 0.1);
+  position: relative;
+  font-family: var(--mono);
+}
+
+.sidebar::before {
+  content: "> PERSONNEL DATA";
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background: var(--bg);
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.avatar {
+  width: 108px;
+  height: 108px;
+  border-radius: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  font: 700 10px var(--mono);
+  color: var(--accent);
+  overflow: hidden;
+  margin: 0 auto;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0px;
+  filter: sepia(1) hue-rotate(90deg) saturate(3);
+}
+.name {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.name::after {
+  content: "_";
+  animation: blink 1s infinite;
+  color: var(--accent);
+}
+.role {
+  color: var(--accent-2);
+  font-weight: bold;
+  margin-top: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section {
+  margin-top: 18px;
+}
+.section h3 {
+  margin: 0 0 10px 0;
+  font: bold 12px var(--mono);
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.section h3::before {
+  content: "> ";
+  color: var(--accent);
+}
+
+.contact {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  font-family: var(--mono);
+}
+.contact a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.1s ease;
+  border-bottom: 1px solid transparent;
+}
+.contact a:hover {
+  color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+  text-shadow: 0 0 8px rgba(0, 255, 65, 0.8);
+}
+.contact a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.contact-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+.contact-key {
+  color: var(--muted);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.contact-key::after {
+  content: ":";
+}
+.contact-value {
+  color: var(--text);
+}
+
+.list {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text);
+}
+.pill {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 0px;
+  padding: 2px 6px;
+  background: var(--bg);
+  margin: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ===== Terminal skill meters ===== */
+.skill-row {
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  gap: 10px;
+  align-items: center;
+}
+.skill-name {
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.meter {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  border-radius: 0px;
+  padding: 2px;
+  font-family: var(--mono);
+}
+.meter .seg {
+  width: 18px;
+  height: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.meter .seg.filled {
+  background: var(--accent);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+  border-color: var(--accent);
+}
+.meter[data-level="1"] .seg:nth-child(1) {
+  background: var(--accent);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+  border-color: var(--accent);
+}
+.meter[data-level="2"] .seg:nth-child(-n + 2) {
+  background: var(--accent);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+  border-color: var(--accent);
+}
+.meter[data-level="3"] .seg:nth-child(-n + 3) {
+  background: var(--accent);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+  border-color: var(--accent);
+}
+.meter[data-level="4"] .seg:nth-child(-n + 4) {
+  background: var(--accent);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+  border-color: var(--accent);
+}
+.meter[data-level="5"] .seg:nth-child(-n + 5) {
+  background: var(--accent);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+  border-color: var(--accent);
+}
+
+/* ===== Main ===== */
+.main {
+  display: grid;
+  gap: 16px;
+}
+.card {
+  background: var(--bg-2);
+  border: 2px solid var(--accent);
+  border-radius: 0px;
+  padding: 20px 22px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+  position: relative;
+}
+.card::before {
+  content: "[ " attr(data-section) " ]";
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  background: var(--bg);
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.card h2 {
+  margin: 0 0 15px 0;
+  font: bold 16px var(--mono);
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.card h2::before {
+  content: ">> ";
+  color: var(--accent-2);
+}
+.card h3 {
+  margin: 0;
+  font-size: 14px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+}
+.muted {
+  color: var(--muted);
+}
+
+.job {
+  display: grid;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px dashed var(--border);
+}
+.job:first-of-type {
+  border-top: none;
+  padding-top: 4px;
+}
+.job .top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.job ul {
+  margin: 6px 0 0 18px;
+}
+.job li::marker {
+  content: "> ";
+  color: var(--accent);
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ===== Global link styles ===== */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.1s ease;
+  border-bottom: 1px solid transparent;
+}
+
+a:hover {
+  color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+}
+
+a:visited {
+  color: var(--accent);
+}
+
+a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ===== Keyboard-style focus rings ===== */
+button,
+[tabindex] {
+  outline: none;
+}
+button:focus-visible,
+[tabindex]:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--accent);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== PRINT MEDIA QUERY ===== */
+@page {
+  size: auto;
+  margin: 10mm;
+}
+
+@media print {
+  /* Print optimization - keep terminal theme for printing */
+  :root {
+    /* Terminal theme colors optimized for print */
+    --bg: #000000; /* pure black terminal */
+    --bg-2: #0a0a0a; /* slightly lighter panel */
+    --text: #66ff66; /* brighter green for better contrast */
+    --muted: #449944; /* darker green for better contrast */
+    --accent: #99ff99; /* lighter green with better grayscale values */
+    --accent-2: #88ff88; /* adjusted for better grayscale conversion */
+    --border: #225522; /* darker green borders for better visibility */
+    --glow: rgba(100, 255, 100, 0.4); /* adjusted glow */
+  }
+
+  /* Force layout preservation for print */
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-width: 1200px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Keep scanlines but disable animation */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 255, 0, 0.03) 0px,
+      rgba(0, 255, 0, 0.03) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    animation: none; /* Remove flicker animation for print */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Page layout preservation */
+  .page {
+    width: 1100px;
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  /* Grid layout preservation */
+  .grid {
+    display: grid !important;
+    grid-template-columns: 320px 1fr !important;
+    gap: 24px !important;
+    width: 100% !important;
+  }
+
+  /* Force sidebar width */
+  .sidebar {
+    width: 320px !important;
+    align-self: start;
+    height: fit-content;
+
+    box-sizing: border-box;
+    background: var(--bg-2);
+    border: 2px solid var(--accent);
+    border-radius: 0px;
+    box-shadow:
+      0 0 20px rgba(0, 255, 0, 0.3),
+      inset 0 0 20px rgba(0, 255, 0, 0.1);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Label preservation */
+  .sidebar::before {
+    content: "> PERSONNEL DATA";
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background: var(--bg);
+    padding: 0 8px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  /* Card styles preservation */
+  .card {
+    background: var(--bg-2);
+    border: 2px solid var(--accent);
+    border-radius: 0px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  /* Card label preservation */
+  .card::before {
+    content: "[ " attr(data-section) " ]";
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    background: var(--bg);
+    padding: 0 8px;
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Maintain card spacing */
+  .main {
+    display: grid !important;
+    gap: 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Avatar styles */
+  .avatar {
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .avatar img {
+    filter: sepia(1) hue-rotate(90deg) saturate(3);
+  }
+
+  /* Text styling */
+  .name::after {
+    content: "_";
+    color: var(--accent);
+    animation: none; /* Disable blink animation for print */
+  }
+
+  /* Skill meters */
+  .meter {
+    background: var(--bg);
+    border: 1px solid var(--accent);
+  }
+
+  .meter .seg {
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+
+  .meter[data-level="1"] .seg:nth-child(1),
+  .meter[data-level="2"] .seg:nth-child(-n + 2),
+  .meter[data-level="3"] .seg:nth-child(-n + 3),
+  .meter[data-level="4"] .seg:nth-child(-n + 4),
+  .meter[data-level="5"] .seg:nth-child(-n + 5) {
+    background: var(--accent);
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+    border-color: var(--accent);
+  }
+
+  /* Pills */
+  .pill {
+    background: var(--bg);
+    border: 1px solid var(--accent);
+    color: var(--text);
+  }
+
+  /* Job sections */
+  .job {
+    border-top: 1px dashed var(--border);
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .job li::marker {
+    content: "> ";
+    color: var(--accent);
+  }
+
+  /* Links */
+  a {
+    color: var(--accent) !important;
+    text-decoration: none !important;
+  }
+
+  /* Section break control */
+  .section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Force color printing */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  /* Disable animations for print */
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Override responsive behavior in print */
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 320px 1fr !important;
+      flex-direction: row !important;
+    }
+    .page {
+      width: 1100px !important;
+      max-width: 1100px !important;
+    }
+    .sidebar {
+      width: 320px !important;
+      order: 0 !important;
+    }
+    .main {
+      order: 1 !important;
+    }
+  }
+
+  /* Hide UI elements during print */
+  .theme-selector,
+  .theme-toggle,
+  .info-panel,
+  .pdf-controls,
+  .resume-selector {
+    display: none !important;
+  }
+}
