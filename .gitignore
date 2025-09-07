@@ -55,6 +55,8 @@ logs/
 *.temp
 
 # Project
-**/personal/**
 data/**
 
+# Private checkout (do not commit)
+.private/
+.private/**

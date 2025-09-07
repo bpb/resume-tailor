@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """
-Resume Assets Generator Script
-Scans the resources directory and generates a resumes.json file with available JSON and PNG pairs.
-This script pairs resume data files with their corresponding profile photos.
+Minimal Resume Assets Generator
+
+- Scan both `resources/` and `.private/resources/`.
+- For each immediate subdir, grab the first *.json and first *.png (alphabetical).
+- Write `data/resumes.json` with those paths (relative to repo root).
+
+Assumption: The user ensures that each subdir contains the needed files.
 """
 
 import json
@@ -10,172 +14,81 @@ from pathlib import Path
 from datetime import datetime
 
 
-def generate_resumes_json():
-    """Generate the resumes.json file by scanning the resources directory"""
-    print("📄 Scanning resources directory for resume files...")
+def collect_from_root(root: Path, base: Path):
+    """Collect resume entries from a given root (resources or .private/resources)."""
+    entries = {}
+    if not root.exists():
+        return entries
 
-    resources_dir = Path(__file__).parent.parent / "resources"
+    for subdir in sorted([p for p in root.iterdir() if p.is_dir()]):
+        # Look only at top-level files in each subdir
+        json_candidates = sorted(subdir.glob("*.json"))
+        png_candidates = sorted(subdir.glob("*.png"))
 
-    if not resources_dir.exists():
-        print(f"❌ Resources directory not found: {resources_dir}")
-        return False
+        if not json_candidates or not png_candidates:
+            print(f"⚠️  Skipping '{subdir}' (missing .json or .png)")
+            continue
 
-    # Find all JSON and PNG files
-    json_files = [f for f in resources_dir.glob("**/*.json") if f.is_file()]
-    png_files = [f for f in resources_dir.glob("**/*.png") if f.is_file()]
+        json_path = json_candidates[0]
+        png_path = png_candidates[0]
 
-    print(f"🔍 Found {len(json_files)} JSON files and {len(png_files)} PNG files")
-
-    # Create pairs based on naming patterns
-    resume_pairs = []
-
-    for json_file in json_files:
-        json_name = json_file.stem
-
-        # Look for matching PNG with similar name
-        matching_png = None
-        for png_file in png_files:
-            png_name = png_file.stem
-
-            # Check for exact match or related naming patterns
-            # (e.g., "resume-data" might match with "profile-photo")
-            if (
-                png_name == json_name
-                or (
-                    json_name.endswith("-resume-data")
-                    and png_name.endswith("-profile-photo")
-                )
-                or (json_name.startswith("resume-") and png_name.startswith("profile-"))
-                or (
-                    "resume" in json_name
-                    and "profile" in png_name
-                    and json_name.split("-")[0] == png_name.split("-")[0]
-                )
-            ):
-
-                matching_png = png_file
-                break
-
-        # Extract subfolder name for resume naming
-        # If the file is directly in resources, use "default", otherwise use the subfolder name
-        relative_path = json_file.relative_to(resources_dir)
-        subfolder = (
-            str(relative_path.parent)
-            if relative_path.parent != Path(".")
-            else "default"
-        )
-
-        # Get file stats
+        # File stats (optional metadata)
         try:
-            json_stats = json_file.stat()
-            json_size = json_stats.st_size
-            json_modified = json_stats.st_mtime
+            js = json_path.stat()
+            json_size, json_mtime = js.st_size, js.st_mtime
         except OSError:
-            json_size = 0
-            json_modified = 0
+            json_size, json_mtime = 0, 0
 
-        # Create resume entry
-        resume_entry = {
-            "name": subfolder,  # Name the resume by its subfolder
-            "jsonFile": str(json_file.relative_to(Path(__file__).parent.parent)),
+        try:
+            ps = png_path.stat()
+            png_size, png_mtime = ps.st_size, ps.st_mtime
+        except OSError:
+            png_size, png_mtime = 0, 0
+
+        entry = {
+            "jsonFile": str(json_path.relative_to(base)),
             "jsonSize": json_size,
-            "jsonLastModified": json_modified,
-            "pngFile": (
-                str(matching_png.relative_to(Path(__file__).parent.parent))
-                if matching_png
-                else None
-            ),
-            "hasPngPhoto": matching_png is not None,
+            "jsonLastModified": json_mtime,
+            "pngFile": str(png_path.relative_to(base)),
+            "pngSize": png_size,
+            "pngLastModified": png_mtime,
+            "hasPngPhoto": True,
         }
+        entries[subdir.name] = entry
+        print(f"✅ {subdir.name}: {entry['jsonFile']} + {entry['pngFile']}")
 
-        # Add PNG file details if found
-        if matching_png:
-            try:
-                png_stats = matching_png.stat()
-                resume_entry["pngSize"] = png_stats.st_size
-                resume_entry["pngLastModified"] = png_stats.st_mtime
-            except:
-                resume_entry["pngSize"] = 0
-                resume_entry["pngLastModified"] = 0
+    return entries
 
-        resume_pairs.append(resume_entry)
-        print(
-            f"✅ Added resume: {json_file.name}"
-            + (
-                f" with matching photo: {matching_png.name}"
-                if matching_png
-                else " (no matching photo found)"
-            )
-            + f" - Named: '{subfolder}'"
-        )
 
-    # Sort resumes alphabetically by JSON filename
-    resume_pairs.sort(key=lambda r: r["jsonFile"])
+def generate_resumes_json():
+    base = Path(__file__).parent.parent
+    roots = [base / "resources", base / ".private" / "resources"]
+    out_file = base / "data" / "resumes.json"
 
-    # Debug: Print resume entries before writing to file
-    print("\n🔍 Debug - Resume entries before JSON serialization:")
-    for entry in resume_pairs:
-        print(f"   Entry: {entry}")
+    all_entries = {}
+    for root in roots:
+        all_entries.update(collect_from_root(root, base))
 
-    # Create the JSON structure
-    resumes_data = {
+    # Sort and write JSON
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+
+    data = {
         "version": "1.0.0",
         "generated": datetime.now().isoformat(),
-        "totalResumes": len(resume_pairs),
-        "resumes": resume_pairs,
+        "totalResumes": len(all_entries),
+        "resumes": all_entries,
     }
 
-    # Debug: Check if 'name' field is present right before serialization
-    print("\n🧪 Verifying 'name' field is present in resume entries:")
-    for idx, resume in enumerate(resumes_data["resumes"]):
-        print(
-            f"   Resume #{idx+1}: name={'name' in resume}, value={resume.get('name', 'MISSING')}"
-        )
+    with out_file.open("w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
-    # Write to resumes.json in the js directory
-    output_file = Path(__file__).parent.parent / "data" / "resumes.json"
-
-    # Create js directory if it doesn't exist
-    output_file.parent.mkdir(exist_ok=True)
-
-    try:
-        with open(output_file, "w", encoding="utf-8") as f:
-            json.dump(resumes_data, f, indent=2, ensure_ascii=False)
-
-        print(f"✅ Successfully generated {output_file}")
-        print(f"📊 Total resumes: {len(resume_pairs)}")
-
-        # List all included resumes
-        for resume in resume_pairs:
-            has_photo = "✓" if resume["hasPngPhoto"] else "✗"
-            print(f"   📄 {resume['jsonFile']} ({has_photo} Photo)")
-
-        return True
-
-    except Exception as e:
-        print(f"❌ Error writing resumes.json: {e}")
-        return False
-
-
-def main():
-    """Main function"""
-    print("🚀 Resume Assets Generator Script")
-    print("=" * 50)
-
-    success = generate_resumes_json()
-
-    if success:
-        print("\n✅ Resume assets generation completed successfully!")
-        print(
-            "💡 The resumes.json file contains a list of all JSON resume files and their matching profile photos."
-        )
-        print(
-            "🔄 Run this script whenever you add new resume data files or profile photos."
-        )
-    else:
-        print("\n❌ Resume assets generation failed!")
-        exit(1)
+    print(f"📦 Wrote {out_file} (total {len(all_entries)})")
+    return True
 
 
 if __name__ == "__main__":
-    main()
+    print("🚀 Minimal Resume Assets Generator")
+    print("=" * 50)
+    ok = generate_resumes_json()
+    if not ok:
+        exit(1)

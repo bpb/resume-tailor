@@ -108,27 +108,12 @@ class ResumeSwitcher {
     // Clear existing options
     this.resumeSelect.innerHTML = "";
 
-    // Process resumes from data
-    this.resumesData.resumes.forEach((resume) => {
+    // Process resumes from data (now an object with keys as resume names)
+    Object.entries(this.resumesData.resumes).forEach(([name, resume]) => {
       const option = document.createElement("option");
 
-      // Use the name property from resumes.json if available
-      // Fall back to extracting from filename if not available
-      let displayName = "";
-
-      if (resume.name) {
-        // Use the provided name from resumes.json
-        displayName = resume.name;
-      } else {
-        // Legacy fallback: extract name from file path
-        displayName = resume.jsonFile
-          .split("/")
-          .pop()
-          .replace("-data.json", "")
-          .replace(".json", "")
-          .replace(/-/g, " ")
-          .trim();
-      }
+      // Use the name from the key in resumes.json
+      let displayName = name;
 
       // Capitalize first letter of each word
       displayName = displayName
@@ -144,7 +129,7 @@ class ResumeSwitcher {
     });
 
     console.log(
-      `Populated resume selector with ${this.resumesData.resumes.length} resumes`,
+      `Populated resume selector with ${Object.keys(this.resumesData.resumes).length} resumes`,
     );
   }
 
@@ -197,9 +182,11 @@ class ResumeSwitcher {
       // Use resume from localStorage
       initialResume = storedResume;
       console.log(`Using resume from localStorage: ${initialResume}`);
-    } else if (this.resumesData?.resumes?.length > 0) {
+    } else if (Object.keys(this.resumesData?.resumes || {}).length > 0) {
       // Use first resume from resumes.json
-      initialResume = this.resumesData.resumes[0].jsonFile;
+      initialResume =
+        this.resumesData.resumes[Object.keys(this.resumesData.resumes)[0]]
+          .jsonFile;
       console.log(`Using default resume: ${initialResume}`);
     } else {
       // Fallback to example resume
@@ -222,7 +209,8 @@ class ResumeSwitcher {
   resumeExists(resumePath) {
     if (!this.resumesData || !this.resumesData.resumes) return false;
 
-    return this.resumesData.resumes.some(
+    // Check if any resume in the object has the matching jsonFile path
+    return Object.values(this.resumesData.resumes).some(
       (resume) => resume.jsonFile === resumePath,
     );
   }
