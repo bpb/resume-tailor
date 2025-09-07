@@ -13,7 +13,6 @@ class ThemeSwitcher {
 
     // Path to themes and CSS
     this.themesJsonPath = "data/themes.json";
-    this.cssBasePath = "css/";
 
     // Initialize
     this.init();
@@ -82,23 +81,20 @@ class ThemeSwitcher {
     // Array for all themes
     const themeOptions = [];
 
-    // Process themes from data
-    this.themesData.themes.forEach((theme) => {
+    // Process themes from data (now a dictionary)
+    Object.keys(this.themesData.themes).forEach((displayName) => {
       // Create theme option
       const themeOption = document.createElement("option");
 
-      // Format theme name for display (capitalize words)
-      let displayName = theme.name.replace(/-/g, " ").trim();
+      // Get the theme value from the dictionary
+      const theme = this.themesData.themes[displayName];
 
-      // Capitalize first letter of each word
-      displayName = displayName
+      // Setup theme option
+      themeOption.value = `${displayName}`;
+      themeOption.textContent = displayName
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
-
-      // Setup theme option
-      themeOption.value = `${theme.name}/theme`;
-      themeOption.textContent = displayName;
       themeOptions.push(themeOption);
     });
 
@@ -161,10 +157,10 @@ class ThemeSwitcher {
       // Use theme from localStorage
       initialTheme = storedTheme;
       console.log(`Using theme from localStorage: ${initialTheme}`);
-    } else if (this.themesData?.themes?.length > 0) {
+    } else if (Object.keys(this.themesData?.themes || {}).length > 0) {
       // Use first theme from themes.json
-      const firstTheme = this.themesData.themes[0];
-      initialTheme = `${firstTheme.name}/theme`;
+      const firstThemeKey = Object.keys(this.themesData.themes)[0];
+      initialTheme = `${firstThemeKey}`;
       console.log(`Using default theme: ${initialTheme}`);
     } else {
       // Fallback to cyberpunk theme
@@ -184,60 +180,39 @@ class ThemeSwitcher {
   /**
    * Check if a theme exists in the loaded themes data
    */
-  themeExists(themePath) {
+  themeExists(themeName) {
+    // Check if the theme directory exists
     if (!this.themesData || !this.themesData.themes) return false;
 
-    // Parse the theme path to get the theme name and file
-    const pathParts = themePath.split("/");
-    const themeName = pathParts[0];
-
-    // Check if the theme directory exists
-    return this.themesData.themes.some((theme) => theme.name === themeName);
+    // Check if the theme exists in our themes data
+    for (const displayName in this.themesData.themes) {
+      const theme = this.themesData.themes[displayName];
+      if (theme === themeName) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
    * Change the active theme
    */
-  changeTheme(themePath) {
+  changeTheme(themeName) {
     // Skip if theme is already active
-    if (this.currentTheme === themePath) return;
+    if (this.currentTheme === themeName) return;
 
-    // Parse the theme path (format: "theme-name/file-name")
-    let themeName, themeFile;
+    // Find the theme in our themes data
+    let fullPath = "";
 
-    if (themePath.includes("/")) {
-      // New format: "theme-name/file-name"
-      const parts = themePath.split("/");
-      themeName = parts[0];
-      themeFile = parts[1];
+    // Look through available themes to find the matching one
 
-      // Add .css extension if not present
-      if (!themeFile.endsWith(".css")) {
-        themeFile += ".css";
-      }
-    } else {
-      // Legacy format: direct filename
-      // This handles backward compatibility with old links
-      themeName = "cyberpunk"; // Default fallback
-      themeFile = "theme";
-
-      // Ensure it ends with .css
-      if (!themeFile.endsWith(".css")) {
-        themeFile += ".css";
-      }
-
-      console.warn(
-        `Legacy theme format detected: ${themePath}, using ${themeName}/${themeFile}`,
-      );
-    }
-
-    // Build the full path to the CSS file
-    const fullPath = `${this.cssBasePath}${themeName}/${themeFile}`;
+    const theme = this.themesData.themes[themeName];
+    fullPath = theme.filePath; // Get the full path from the theme object
 
     // Update the stylesheet link
     if (this.themeStylesheet) {
       this.themeStylesheet.href = fullPath;
-      console.log(`Theme changed to: ${themeName}/${themeFile} (${fullPath})`);
+      console.log(`Theme changed to: ${themeName} (${fullPath})`);
     } else {
       console.error("Theme stylesheet element not found");
     }
@@ -246,16 +221,15 @@ class ThemeSwitcher {
     document.body.setAttribute("data-theme", themeName);
 
     // Store current theme
-    this.currentTheme = themePath;
+    this.currentTheme = themeName;
 
     // Save to localStorage for persistence
-    localStorage.setItem("selectedTheme", themePath);
+    localStorage.setItem("selectedTheme", themeName);
 
     // Dispatch theme changed event for other components
     const event = new CustomEvent("themeChanged", {
       detail: {
         themeName: themeName,
-        themeFile: themeFile,
         fullPath: fullPath,
         isPDFMode: document.body.classList.contains("pdf-mode"),
       },
