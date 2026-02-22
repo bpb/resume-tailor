@@ -51,7 +51,7 @@ class ResumeRenderer {
       console.warn(
         "🚨 CORS Error: To view this resume properly, please run a local HTTP server:",
       );
-      console.warn("   cd resume_template_styler");
+      console.warn("   cd resume-tailor");
       console.warn("   python3 -m http.server 8000");
       console.warn("   Then open: http://localhost:8000/resume-dynamic.html");
       return this.getFallbackResumeData();
@@ -76,6 +76,31 @@ class ResumeRenderer {
       console.error("Resume container not found or data is empty");
       return;
     }
+
+    const normalizedData = {
+      personal: {
+        name: "",
+        title: "",
+        location: "",
+        email: "",
+        phone: "",
+        linkedin: "",
+        instagram: "",
+        github: "",
+        photo: "",
+        summaryMini: "",
+        workAuth: "",
+        hobbies: "",
+        ...(data.personal || {}),
+      },
+      skills: data.skills || {},
+      qualities: Array.isArray(data.qualities) ? data.qualities : [],
+      experience: Array.isArray(data.experience) ? data.experience : [],
+      education: Array.isArray(data.education) ? data.education : [],
+      projects: Array.isArray(data.projects) ? data.projects : [],
+    };
+
+    data = normalizedData;
 
     // Sidebar (left)
     const sidebar = `
@@ -102,7 +127,9 @@ class ResumeRenderer {
             const title =
               category.charAt(0).toUpperCase() +
               category.slice(1).replace(/_/g, " ");
-            const items = data.skills[category];
+            const items = Array.isArray(data.skills[category])
+              ? data.skills[category]
+              : [];
             return `
         <div class="section"><h3>${title}</h3>
           ${items

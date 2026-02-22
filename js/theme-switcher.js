@@ -63,8 +63,15 @@ class ThemeSwitcher {
       this.themesData = {
         version: "fallback",
         generated: new Date().toISOString(),
-        totalThemes: 0,
-        themes: [],
+        totalThemes: 1,
+        themes: {
+          professional: {
+            filePath: "css/professional/theme.css",
+            fileSize: 0,
+            lastModified: Date.now(),
+            hasMediaQueryPrint: true,
+          },
+        },
       };
     }
   }
@@ -163,8 +170,8 @@ class ThemeSwitcher {
       initialTheme = `${firstThemeKey}`;
       console.log(`Using default theme: ${initialTheme}`);
     } else {
-      // Fallback to cyberpunk theme
-      initialTheme = "cyberpunk/theme";
+      // Fallback to bundled default theme
+      initialTheme = "professional";
       console.log(`Using fallback theme: ${initialTheme}`);
     }
 
@@ -181,17 +188,9 @@ class ThemeSwitcher {
    * Check if a theme exists in the loaded themes data
    */
   themeExists(themeName) {
-    // Check if the theme directory exists
     if (!this.themesData || !this.themesData.themes) return false;
 
-    // Check if the theme exists in our themes data
-    for (const displayName in this.themesData.themes) {
-      const theme = this.themesData.themes[displayName];
-      if (theme === themeName) {
-        return true;
-      }
-    }
-    return false;
+    return Object.prototype.hasOwnProperty.call(this.themesData.themes, themeName);
   }
 
   /**
@@ -206,8 +205,27 @@ class ThemeSwitcher {
 
     // Look through available themes to find the matching one
 
-    const theme = this.themesData.themes[themeName];
-    fullPath = theme.filePath; // Get the full path from the theme object
+    const theme = this.themesData?.themes?.[themeName];
+    if (!theme || !theme.filePath) {
+      const fallbackThemeName = Object.keys(this.themesData?.themes || {})[0];
+      const fallbackTheme = fallbackThemeName
+        ? this.themesData.themes[fallbackThemeName]
+        : null;
+
+      if (!fallbackTheme?.filePath) {
+        console.error(`Theme not found: ${themeName}`);
+        return;
+      }
+
+      console.warn(
+        `Theme not found: ${themeName}. Falling back to ${fallbackThemeName}.`,
+      );
+      themeName = fallbackThemeName;
+      fullPath = fallbackTheme.filePath;
+    } else {
+      fullPath = theme.filePath; // Get the full path from the theme object
+    }
+
 
     // Update the stylesheet link
     if (this.themeStylesheet) {

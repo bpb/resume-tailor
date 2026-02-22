@@ -87,14 +87,14 @@ class ResumeSwitcher {
         version: "fallback",
         generated: new Date().toISOString(),
         totalResumes: 1,
-        resumes: [
-          {
+        resumes: {
+          example: {
             jsonFile: "resources/example/resume-data.json",
             jsonSize: 0,
             jsonLastModified: Date.now(),
             hasPngPhoto: false,
           },
-        ],
+        },
       };
     }
   }
